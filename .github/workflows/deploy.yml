@@ -30,10 +30,12 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
 
       # 5. Prepare deployment package
       - name: Prepare deployment
         run: |
+          rm -rf deploy
           mkdir -p deploy
 
           cp -r .next deploy/
@@ -73,8 +75,8 @@ jobs:
           target: "/opt/payload.assistly-ai.com/current/"
           strip_components: 1
 
-      # 7. Restart application
-      - name: Restart PM2
+      # 7. Install production dependencies and restart PM2
+      - name: Restart application
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -83,7 +85,7 @@ jobs:
           script: |
             cd /opt/payload.assistly-ai.com/current
 
-            npm install --omit=dev
+            npm ci --omit=dev
 
             pm2 restart model01
             pm2 save
