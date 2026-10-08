@@ -45,6 +45,7 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const logoData = await getCachedGlobal('logo', 1)()
+  // Get the favicon from the logo data
   const favicon = getFaviconSource(logoData)
 
   return {
