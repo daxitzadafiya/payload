@@ -8,6 +8,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    env:
+      NODE_OPTIONS: "--max-old-space-size=4096" 
 
     steps:
       # 1. Checkout repository
@@ -25,14 +28,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4. Build Next.js + Payload
+      # 4. Checkout to main branch
+      - name: Checkout to main branch
+        run: git checkout main
+
+      - name: Echo current branch
+        run: echo "Current branch is ${{ github.ref }}"
+
+      # 5. Build Next.js + Payload  
       - name: Build application
         run: npm run build
-        env:
-          NODE_ENV: production
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
 
-      # 5. Prepare deployment package
+      # 6. Prepare deployment package
       - name: Prepare deployment
         run: |
           rm -rf deploy
@@ -64,7 +71,7 @@ jobs:
             cp payload.config.js deploy/
           fi
 
-      # 6. Upload build to server
+      # 7. Upload build to server
       - name: Upload to Hostinger
         uses: appleboy/scp-action@v1
         with:
@@ -75,7 +82,7 @@ jobs:
           target: "/opt/payload.assistly-ai.com/current/"
           strip_components: 1
 
-      # 7. Install production dependencies and restart PM2
+      # 8. Install production dependencies and restart PM2
       - name: Restart application
         uses: appleboy/ssh-action@v1
         with:
@@ -87,5 +94,5 @@ jobs:
 
             npm ci --omit=dev
 
-            pm2 restart model01
+            pm2 restart payload
             pm2 save
