@@ -1,0 +1,37 @@
+build
+dist / media
+node_modules
+.DS_Store
+.env
+.env.production
+.next
+next-env.d.ts
+.vercel
+
+# Payload default media upload directory
+public/robots.txt
+public/sitemap*.xml
+public/media/
+backup/
+
+
+# Local SQLite (WAL sidecars — not for git)
+roumpos.db
+roumpos.db-wal
+roumpos.db-shm
+roumpos.db.bak-*
+roumpos.db.corrupt-*
+roumpos.db.pre-recover-*
+
+# Local tooling (portable sqlite CLI, etc.)
+.tools/
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat

@@ -1,0 +1,1140 @@
+/* Auth + admin chrome — visual only. Scoped carefully so Payload behaviour stays intact. */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+$brand: #553E75;
+$brand-hover: #6B5B8A;
+$gold: #553E75;
+$ink: #1a1714;
+$stone: #efeae3;
+/* Stepped surface ladder for list zebra / chrome (match model01 + pre-theme admin). */
+$sand: #faf7f2;
+$surface: #ebe4da;
+$paper: #fffcf8;
+$font: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+$villa: url('/media/Modern_luxury_villa_exterior_2K_202608251035-1920x1072.jpg');
+
+/* Runtime Theme tokens (AdminThemeStyles → Theme Custom CSS).
+   SCSS $vars remain compile-time fallbacks; keep villa / dark-glass layout. */
+@function admin-c($token, $fallback) {
+  @return var(--admin-#{$token}, #{$fallback});
+}
+
+@function admin-a($token, $fallback, $alpha) {
+  @return color-mix(in srgb, var(--admin-#{$token}, #{$fallback}) #{$alpha * 100%}, transparent);
+}
+
+@keyframes authBgDrift {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1.14) translate3d(-1%, 0.6%, 0);
+  }
+}
+
+@keyframes authCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes authRingPulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.035);
+  }
+}
+
+@keyframes authCaptionIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dashHeroIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   AUTH PAGES
+   ═══════════════════════════════════════════ */
+
+.template-minimal {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #0a0c10;
+  color: #f5f2ec;
+  font-family: var(--font-theme-body, #{$font});
+  -webkit-font-smoothing: antialiased;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: -4%;
+    z-index: 0;
+    background: #0a0c10 $villa center 38% / cover no-repeat;
+    animation: authBgDrift 34s ease-in-out infinite alternate;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 38%, transparent 0%, rgba(6, 7, 10, 0.45) 70%, rgba(6, 7, 10, 0.82) 100%),
+      linear-gradient(180deg, rgba(6, 7, 10, 0.45) 0%, rgba(6, 7, 10, 0.35) 40%, rgba(6, 7, 10, 0.88) 100%);
+  }
+
+  .auth-ornament {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .auth-ornament__glow {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    width: min(70vw, 28rem);
+    height: min(70vw, 28rem);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, admin-a(secondary, $gold, 0.22), transparent 68%);
+    filter: blur(8px);
+  }
+
+  .auth-ornament__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border: 1px solid admin-a(secondary, $gold, 0.35);
+    border-radius: 50%;
+    animation: authRingPulse 11s ease-in-out infinite;
+  }
+
+  .auth-ornament__ring--lg {
+    width: min(96vw, 42rem);
+    height: min(96vw, 42rem);
+  }
+
+  .auth-ornament__ring--md {
+    width: min(84vw, 35rem);
+    height: min(84vw, 35rem);
+    border-color: admin-a(secondary, $gold, 0.24);
+    animation-delay: 0.8s;
+  }
+
+  .auth-ornament__ring--sm {
+    width: min(72vw, 29rem);
+    height: min(72vw, 29rem);
+    border-color: admin-a(secondary, $gold, 0.16);
+    animation-delay: 1.6s;
+  }
+
+  .auth-ornament__corner {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border-color: admin-a(secondary, $gold, 0.7);
+    border-style: solid;
+  }
+
+  .auth-ornament__corner--tl {
+    top: 1.35rem;
+    left: 1.35rem;
+    border-width: 1px 0 0 1px;
+  }
+
+  .auth-ornament__corner--tr {
+    top: 1.35rem;
+    right: 1.35rem;
+    border-width: 1px 1px 0 0;
+  }
+
+  .auth-ornament__corner--bl {
+    bottom: 1.35rem;
+    left: 1.35rem;
+    border-width: 0 0 1px 1px;
+  }
+
+  .auth-ornament__corner--br {
+    right: 1.35rem;
+    bottom: 1.35rem;
+    border-width: 0 1px 1px 0;
+  }
+
+  .auth-ornament__caption {
+    position: absolute;
+    left: 50%;
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: min(90vw, 28rem);
+    text-align: center;
+    animation: authCaptionIn 0.9s ease 0.25s both;
+  }
+
+  .auth-ornament__eyebrow {
+    margin: 0 0 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, admin-c(secondary, $gold) 70%, white);
+  }
+
+  .auth-ornament__title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: rgba(247, 244, 238, 0.72);
+  }
+
+  .template-minimal__wrap {
+    position: relative;
+    z-index: 2;
+    isolation: isolate;
+    width: 100%;
+    max-width: 27.5rem;
+    margin: 0 auto 3.5rem;
+    padding: 2.75rem 1.85rem 2.5rem;
+    border-radius: 1.25rem;
+    border: 1px solid admin-a(secondary, $gold, 0.45);
+    background:
+      linear-gradient(165deg, rgba(255, 255, 255, 0.07), transparent 42%),
+      rgba(14, 12, 10, 0.78);
+    box-shadow:
+      0 48px 90px -30px rgba(0, 0, 0, 0.72),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+      0 0 60px -20px admin-a(secondary, $gold, 0.35);
+    backdrop-filter: blur(26px) saturate(1.2);
+    -webkit-backdrop-filter: blur(26px) saturate(1.2);
+    box-sizing: border-box;
+    animation: authCardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+    /* Offset purple frame behind card */
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -0.55rem -0.55rem auto auto;
+      width: 100%;
+      height: 100%;
+      border-radius: 1.25rem;
+      border: 1px solid admin-a(secondary, $gold, 0.3);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0.9rem;
+      border-radius: 0.85rem;
+      border: 1px solid admin-a(secondary, $gold, 0.14);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    > *:not(.auth-ornament) {
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (min-width: 480px) {
+      padding: 3.15rem 2.65rem 2.9rem;
+      max-width: 29rem;
+    }
+  }
+
+  .login__brand,
+  .graphic-logo,
+  [class*='__brand'] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.85rem;
+
+    img,
+    svg {
+      max-width: min(16.5rem, 74vw) !important;
+      max-height: 3.75rem !important;
+      width: auto !important;
+      height: auto !important;
+    }
+
+    img:first-of-type {
+      display: none !important;
+    }
+
+    img:last-of-type {
+      display: block !important;
+    }
+  }
+
+  .login__brand {
+    &::before {
+      content: 'Agency workspace';
+      margin-bottom: 1.1rem;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, admin-c(secondary, $gold) 72%, white);
+    }
+
+    &::after {
+      content: '';
+      width: 3rem;
+      height: 1px;
+      margin-top: 1.35rem;
+      background: linear-gradient(90deg, transparent, admin-c(secondary, $gold), transparent);
+    }
+  }
+
+  .form-header {
+    margin-bottom: 1.55rem;
+    text-align: center;
+
+    h1 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.55rem, 3vw, 1.85rem);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      color: #faf7f1;
+    }
+
+    p {
+      margin: 0 auto;
+      max-width: 24rem;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(247, 244, 238, 0.7);
+    }
+  }
+
+  .login__form,
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .login__form__inputWrap,
+  .login-fields,
+  .inputWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .field-label,
+  .field-type > label,
+  label {
+    font-family: var(--font-theme-body, #{$font}) !important;
+    font-size: 0.66rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.22em !important;
+    text-transform: uppercase !important;
+    color: rgba(247, 244, 238, 0.82) !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .required,
+  .field-label .required {
+    color: #f0a8a0 !important;
+  }
+
+  .input-wrapper input,
+  input:not([type='checkbox']):not([type='radio']):not([type='submit']),
+  .field-type input {
+    border-radius: 0.45rem !important;
+    border: 1px solid admin-a(secondary, $gold, 0.4) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    color: #f7f4ee !important;
+    font-family: var(--font-theme-body, #{$font}) !important;
+    font-size: 1rem !important;
+    min-height: 3.15rem;
+    padding-inline: 1rem !important;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      border-color: admin-a(secondary, $gold, 0.65) !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: none !important;
+      border-color: admin-c(secondary, $gold) !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      box-shadow: 0 0 0 3px admin-a(secondary, $gold, 0.22) !important;
+    }
+
+    &::placeholder {
+      color: rgba(247, 244, 238, 0.35) !important;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: #f7f4ee !important;
+      caret-color: #f7f4ee;
+      transition: background-color 99999s ease-in-out 0s;
+      box-shadow: 0 0 0 1000px rgba(36, 30, 24, 0.95) inset !important;
+    }
+  }
+
+  .btn--style-primary,
+  button.btn.btn--style-primary,
+  .form-submit .btn {
+    --color: #{admin-c(on-secondary, #ffffff)};
+    --bg-color: #{admin-c(secondary, $gold)};
+    --hover-bg: #{admin-c(brand-hover, $brand-hover)};
+    --hover-color: #ffffff;
+    width: 100%;
+    border-radius: 0.45rem !important;
+    border: 1px solid transparent !important;
+    font-family: var(--font-theme-body, #{$font}) !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2em !important;
+    text-transform: uppercase !important;
+    min-height: 3.25rem;
+    margin-top: 0.4rem;
+    color: #{admin-c(on-secondary, #ffffff)} !important;
+    background-color: #{admin-c(secondary, $gold)} !important;
+    box-shadow:
+      0 18px 40px -14px admin-a(secondary, $gold, 0.75),
+      0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    transition:
+      background-color 0.22s ease,
+      color 0.22s ease,
+      transform 0.15s ease,
+      box-shadow 0.22s ease !important;
+
+    .btn__label,
+    .btn__content {
+      color: inherit !important;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled) {
+      color: #ffffff !important;
+      background-color: color-mix(in srgb, admin-c(secondary, $gold) 78%, white) !important;
+    }
+
+    &:disabled,
+    &.btn--disabled {
+      opacity: 0.55;
+      color: #{admin-c(on-secondary, #ffffff)} !important;
+      background-color: #{admin-c(secondary, $gold)} !important;
+    }
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px -12px admin-a(secondary, $gold, 0.55);
+    }
+  }
+
+  .btn--style-secondary {
+    --color: color-mix(in srgb, #{admin-c(secondary, $gold)} 75%, white);
+    --btn-border: 1px solid #{admin-a(secondary, $gold, 0.5)};
+    --hover-color: #ffffff;
+    border-radius: 0.45rem !important;
+    font-family: var(--font-theme-body, #{$font}) !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    min-height: 2.95rem;
+    background: transparent !important;
+  }
+
+  a:not(.btn) {
+    font-family: var(--font-theme-body, #{$font});
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: color-mix(in srgb, admin-c(secondary, $gold) 55%, white);
+    text-decoration: none;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  .login__form > a {
+    align-self: center;
+    margin-top: 0.2rem;
+  }
+
+  .template-minimal__wrap > a:not(.btn) {
+    display: block;
+    margin-top: 1.2rem;
+    text-align: center;
+  }
+
+  .field-type {
+    color: #f7f4ee;
+  }
+
+  @media (max-width: 640px) {
+    .auth-ornament__ring,
+    .auth-ornament__glow {
+      display: none;
+    }
+
+    .auth-ornament__caption {
+      display: none;
+    }
+
+    .template-minimal__wrap {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.25rem 0.9rem;
+
+    .auth-ornament__corner {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    .auth-ornament__corner--tl {
+      top: 0.75rem;
+      left: 0.75rem;
+    }
+
+    .auth-ornament__corner--tr {
+      top: 0.75rem;
+      right: 0.75rem;
+    }
+
+    .auth-ornament__corner--bl {
+      bottom: 0.75rem;
+      left: 0.75rem;
+    }
+
+    .auth-ornament__corner--br {
+      right: 0.75rem;
+      bottom: 0.75rem;
+    }
+
+    .template-minimal__wrap {
+      padding: 2.15rem 1.35rem 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    .template-minimal__wrap,
+    .auth-ornament__ring,
+    .auth-ornament__caption {
+      animation: none !important;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN SHELL + TOASTS + DASHBOARD
+   ═══════════════════════════════════════════ */
+
+html[data-theme='light'] {
+  --font-body: var(--font-theme-body, #{$font});
+  /* Stone canvas + mixed elevation-50 — mirrored in adminThemeBridge (wins via precedence). */
+  --theme-bg: #{admin-c(stone, $stone)};
+  --theme-elevation-0: #{admin-c(paper, $paper)};
+  --theme-elevation-50: color-mix(in srgb, #{admin-c(paper, $paper)} 72%, #{admin-c(stone, $stone)} 28%);
+  --theme-elevation-100: color-mix(in srgb, #{admin-c(surface, $surface)} 65%, #{admin-c(stone, $stone)} 35%);
+  --theme-elevation-150: var(--color-surface-container-high, #e3dbcf);
+  --theme-elevation-200: var(--color-surface-container-highest, #ddd3c4);
+  --theme-border-color: #{admin-a(ink, $ink, 0.1)};
+  --style-radius-m: 0.65rem;
+  --style-radius-s: 0.4rem;
+  --theme-success-100: color-mix(in srgb, #{admin-c(tertiary, $gold)} 12%, white);
+  --theme-success-250: color-mix(in srgb, #{admin-c(tertiary-soft, $brand-hover)} 70%, white);
+  --theme-success-600: #{admin-c(primary, $brand)};
+  --theme-success-800: var(--color-on-tertiary-container, #5c2f20);
+
+  .btn--style-primary {
+    --bg-color: #{admin-c(primary, $brand)};
+    --hover-bg: #{admin-c(tertiary, $gold)};
+    --hover-color: #{admin-c(ink, $ink)};
+  }
+}
+
+/* Collection list zebra — reinforce Payload's elevation-50 odd rows with theme tokens */
+.table tbody tr:nth-child(odd) {
+  background: var(--theme-elevation-50) !important;
+}
+
+.table thead {
+  background: var(--theme-elevation-100);
+}
+
+/* Sidebar */
+/* Sidebar — warmer stone panel (distinct from header + main) */
+.nav {
+  background:
+    linear-gradient(180deg, admin-a(primary, $brand, 0.05), transparent 28%),
+    linear-gradient(
+      165deg,
+      admin-c(sand, $sand) 0%,
+      admin-c(surface, $surface) 55%,
+      admin-c(stone, $stone) 100%
+    ) !important;
+  border-right: 1px solid admin-a(ink, $ink, 0.1) !important;
+  box-shadow: 10px 0 32px -26px admin-a(ink, $ink, 0.4);
+}
+
+.nav__scroll {
+  padding-top: 1.15rem !important;
+}
+
+.nav__wrap {
+  gap: 0.15rem;
+}
+
+.nav-group {
+  margin-bottom: 1.15rem !important;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid admin-a(ink, $ink, 0.06);
+}
+
+.nav-group:last-of-type {
+  border-bottom: none;
+}
+
+.nav-group__toggle {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: admin-a(primary, $brand, 0.72) !important;
+  margin-bottom: 0.55rem !important;
+
+  &:hover,
+  &:focus-visible {
+    color: admin-c(primary, $brand) !important;
+  }
+}
+
+.nav__link {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  font-size: 0.875rem !important;
+  color: admin-a(ink, $ink, 0.72) !important;
+  border-radius: 0.4rem;
+  margin-inline: -0.35rem;
+  padding-inline: 0.55rem 0.75rem !important;
+  padding-block: 0.35rem !important;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: admin-a(tertiary, $gold, 0.14) !important;
+    color: admin-c(ink, $ink) !important;
+    text-decoration: none !important;
+  }
+
+  &.active,
+  &:has(.nav__link-indicator) {
+    background: admin-a(tertiary, $gold, 0.2) !important;
+    color: admin-c(ink, $ink) !important;
+    font-weight: 600 !important;
+  }
+}
+
+.nav__link-indicator {
+  background: admin-c(primary, $brand) !important;
+  width: 3px !important;
+  border-radius: 2px !important;
+  inset-inline-start: 0 !important;
+}
+
+.nav__label {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  color: admin-a(ink, $ink, 0.55) !important;
+}
+
+.nav__controls {
+  padding-top: 0.75rem;
+  border-top: 1px solid admin-a(ink, $ink, 0.06);
+}
+
+.nav__log-out {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  color: admin-a(ink, $ink, 0.55) !important;
+
+  &:hover {
+    color: admin-c(primary, $brand) !important;
+  }
+}
+
+/* Header */
+.app-header {
+  font-family: var(--font-theme-body, #{$font});
+}
+
+/* Header — crisp paper bar (lighter than sidebar) */
+.app-header__bg {
+  background: #fffcf8 !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid admin-a(ink, $ink, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 10px 28px -24px rgba(26, 23, 20, 0.28);
+}
+
+.app-header__content {
+  gap: 0.75rem;
+}
+
+.app-header__account {
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px admin-a(ink, $ink, 0.08);
+  transition: box-shadow 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 0 0 1px admin-a(tertiary, $gold, 0.55);
+  }
+}
+
+.app-header__localizer {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  font-size: 0.8rem !important;
+}
+
+.hamburger {
+  border-radius: 0.45rem !important;
+  box-shadow: 0 0 0 1px admin-a(ink, $ink, 0.1) !important;
+  background: admin-c(paper, $paper) !important;
+
+  &:hover {
+    background: admin-a(tertiary, $gold, 0.12) !important;
+    box-shadow: 0 0 0 1px admin-a(tertiary, $gold, 0.45) !important;
+  }
+}
+
+.step-nav {
+  font-family: var(--font-theme-body, #{$font});
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.step-nav a,
+.step-nav span {
+  font-family: var(--font-theme-body, #{$font});
+}
+
+/* Dashboard hero */
+.admin-dash-hero {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 1.75rem;
+  min-height: 11.5rem;
+  border-radius: 1rem;
+  border: 1px solid admin-a(tertiary, $gold, 0.35);
+  box-shadow:
+    0 24px 48px -28px rgba(26, 23, 20, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  animation: dashHeroIn 0.7s ease both;
+}
+
+.admin-dash-hero__media {
+  position: absolute;
+  inset: 0;
+  background: #1a1714 $villa center 42% / cover no-repeat;
+  transform: scale(1.04);
+}
+
+.admin-dash-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, rgba(14, 12, 10, 0.88) 0%, rgba(14, 12, 10, 0.55) 48%, rgba(14, 12, 10, 0.35) 100%),
+    linear-gradient(180deg, transparent 40%, rgba(14, 12, 10, 0.45));
+}
+
+.admin-dash-hero__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 36rem;
+  padding: 1.65rem 1.6rem 1.5rem;
+  color: #f7f4ee;
+}
+
+.admin-dash-hero__eyebrow {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-theme-body, #{$font});
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: admin-a(tertiary, $gold, 0.95);
+}
+
+.admin-dash-hero__title {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-theme-body, #{$font});
+  font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: #fffcf7;
+}
+
+.admin-dash-hero__text {
+  margin: 0;
+  max-width: 32rem;
+  font-family: var(--font-theme-body, #{$font});
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(247, 244, 238, 0.72);
+}
+
+.admin-dash-hero__chips {
+  position: absolute;
+  right: 1.35rem;
+  bottom: 1.25rem;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid admin-a(tertiary, $gold, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    font-family: var(--font-theme-body, #{$font});
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(247, 244, 238, 0.88);
+    backdrop-filter: blur(8px);
+  }
+
+  @media (max-width: 720px) {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    padding: 0 1.35rem 1.25rem;
+  }
+}
+
+.dashboard {
+  font-family: var(--font-theme-body, #{$font});
+  padding-block: 0.35rem 2.25rem;
+}
+
+.item-card-grid {
+  margin-bottom: 2rem !important;
+  gap: 0.95rem !important;
+}
+
+.item-card-grid__title {
+  position: relative;
+  margin-bottom: 1rem !important;
+  padding-bottom: 0.55rem;
+  font-family: var(--font-theme-body, #{$font}) !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: admin-a(ink, $ink, 0.48) !important;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 2.5rem;
+    height: 2px;
+    background: linear-gradient(90deg, admin-c(tertiary, $gold), transparent);
+  }
+}
+
+.card {
+  min-height: 5.25rem !important;
+  padding: 1.2rem 1.2rem 1.15rem !important;
+  border-radius: 0.85rem !important;
+  border: 1px solid admin-a(ink, $ink, 0.08) !important;
+  background:
+    linear-gradient(145deg, admin-a(tertiary, $gold, 0.08), transparent 42%),
+    admin-c(paper, $paper) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 10px 24px -20px rgba(26, 23, 20, 0.35);
+  overflow: hidden;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.18s ease,
+    background 0.2s ease !important;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, admin-a(tertiary, $gold, 0.55), admin-a(primary, $brand, 0.35));
+    opacity: 0.55;
+    transition:
+      opacity 0.2s ease,
+      width 0.2s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -1.25rem;
+    top: -1.25rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    border: 1px solid admin-a(tertiary, $gold, 0.18);
+    pointer-events: none;
+  }
+}
+
+.card__title {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  font-size: 0.98rem !important;
+  font-weight: 550 !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+  color: admin-c(ink, $ink) !important;
+  line-height: 1.35 !important;
+}
+
+.card--has-onclick:hover {
+  background:
+    linear-gradient(145deg, #{admin-a(tertiary, $gold, 0.16)}, transparent 50%),
+    #fff !important;
+  border-color: admin-a(tertiary, $gold, 0.55) !important;
+  box-shadow:
+    0 18px 36px -18px rgba(26, 23, 20, 0.28),
+    0 0 0 1px admin-a(tertiary, $gold, 0.14) !important;
+  transform: translateY(-2px);
+
+  &::before {
+    opacity: 1;
+    width: 4px;
+    background: admin-c(primary, $brand);
+  }
+}
+
+.card__actions {
+  .btn,
+  button {
+    color: admin-a(ink, $ink, 0.4) !important;
+    transition:
+      color 0.15s ease,
+      transform 0.15s ease;
+
+    &:hover {
+      color: admin-c(primary, $brand) !important;
+      transform: scale(1.06);
+    }
+  }
+}
+
+/* Toasts */
+.payload-toast-container {
+  font-family: var(--font-theme-body, #{$font}) !important;
+
+  .payload-toast-item {
+    position: relative;
+    align-items: center;
+    gap: 0.9rem !important;
+    padding: 1rem 2.75rem 1rem 1.1rem !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid admin-a(tertiary, $gold, 0.45) !important;
+    background:
+      linear-gradient(135deg, rgba(40, 34, 28, 0.98), rgba(16, 14, 12, 0.98)) !important;
+    color: #f7f4ee !important;
+    font-weight: 500 !important;
+    font-size: 0.92rem !important;
+    letter-spacing: 0.01em;
+    line-height: 1.4 !important;
+    box-shadow:
+      0 28px 56px -20px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+      0 0 40px -18px admin-a(tertiary, $gold, 0.35) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .toast-title {
+    margin: 0 !important;
+    font-family: var(--font-theme-body, #{$font}) !important;
+    font-weight: 500 !important;
+    color: inherit !important;
+  }
+
+  .toast-icon {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 1.85rem !important;
+    height: 1.85rem !important;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: admin-a(tertiary, $gold, 0.18);
+    color: admin-c(tertiary, $gold) !important;
+    box-shadow: 0 0 0 1px admin-a(tertiary, $gold, 0.3);
+
+    > * {
+      width: 1rem !important;
+      height: 1rem !important;
+    }
+  }
+
+  .payload-toast-close-button {
+    position: absolute !important;
+    inset-inline-end: 0.75rem !important;
+    inset-inline-start: auto !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid admin-a(tertiary, $gold, 0.35) !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: rgba(247, 244, 238, 0.72) !important;
+    opacity: 1 !important;
+    order: unset !important;
+
+    svg {
+      width: 0.7rem !important;
+      height: 0.7rem !important;
+    }
+
+    &:hover {
+      color: #fff !important;
+      background: rgba(255, 255, 255, 0.14) !important;
+      border-color: admin-a(tertiary, $gold, 0.7) !important;
+    }
+  }
+
+  .toast-success {
+    border-color: admin-a(tertiary, $gold, 0.55) !important;
+
+    .toast-icon {
+      background: admin-a(tertiary, $gold, 0.22);
+      color: admin-c(tertiary, $gold) !important;
+    }
+  }
+
+  .toast-error {
+    border-color: rgba(186, 50, 50, 0.55) !important;
+    background: linear-gradient(135deg, rgba(52, 18, 18, 0.98), rgba(22, 12, 12, 0.98)) !important;
+    color: #ffe8e6 !important;
+
+    .toast-icon {
+      background: rgba(240, 168, 160, 0.18);
+      color: #f0a8a0 !important;
+      box-shadow: 0 0 0 1px rgba(240, 168, 160, 0.35);
+    }
+  }
+
+  .toast-warning {
+    border-color: rgba(201, 168, 76, 0.55) !important;
+    background: linear-gradient(135deg, rgba(46, 36, 14, 0.98), rgba(22, 18, 12, 0.98)) !important;
+    color: #fff4d8 !important;
+
+    .toast-icon {
+      color: #e0c46a !important;
+      background: rgba(224, 196, 106, 0.16);
+      box-shadow: 0 0 0 1px rgba(224, 196, 106, 0.35);
+    }
+  }
+
+  .toast-info {
+    border-color: admin-a(tertiary, $gold, 0.4) !important;
+  }
+}
+
+/* Tooltips */
+.tooltip:not(.field-error) {
+  font-family: var(--font-theme-body, #{$font}) !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em;
+  padding: 0.45rem 0.7rem !important;
+  border-radius: 0.4rem !important;
+  border: 1px solid admin-a(tertiary, $gold, 0.4);
+  background: rgba(16, 14, 12, 0.95) !important;
+  color: #f7f4ee !important;
+  box-shadow: 0 14px 28px -14px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme='light'] .tooltip:not(.field-error) {
+  background: rgba(16, 14, 12, 0.95) !important;
+  color: #f7f4ee !important;
+}
+
+html[data-theme='light'] .tooltip--position-top:not(.field-error):after {
+  border-top-color: rgba(16, 14, 12, 0.95) !important;
+}
+
+html[data-theme='light'] .tooltip--position-bottom:not(.field-error):after {
+  border-bottom-color: rgba(16, 14, 12, 0.95) !important;
+}

@@ -1,0 +1,101 @@
+/*
+ * Contact form invalid borders — keep in sync with
+ * .app-phone-input--invalid.app-phone-input--contact (phone-input.css).
+ * Uses theme token --color-error (#ba1a1a) exactly like the phone field.
+ */
+.contact-field--invalid,
+.contact-field--invalid:hover,
+.contact-field--invalid:focus,
+.contact-field--invalid:focus-visible,
+.contact-field--invalid[aria-invalid='true'],
+.contact-field--invalid[data-state] {
+  border-color: var(--color-error) !important;
+}
+
+.contact-field--invalid:focus,
+.contact-field--invalid:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-error) 15%, transparent) !important;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-color: transparent;
+  outline: none;
+}
+
+.contact-field-checkbox--invalid,
+.contact-field-checkbox--invalid:hover,
+.contact-field-checkbox--invalid:has(:focus-visible) {
+  border-color: var(--color-error) !important;
+}
+
+.contact-field-checkbox--invalid:has(:focus-visible) {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-error) 15%, transparent) !important;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-color: transparent;
+}
+
+/* Same token as invalid field borders (theme --color-error / #ba1a1a). */
+.contact-field-error {
+  color: var(--color-error);
+}
+
+/* Template Two — contact page form panel */
+.contact-form-editorial label,
+.contact-form-editorial .font-label-sm.text-label-sm {
+  color: var(--color-secondary, #c7af87);
+  letter-spacing: 0.22em;
+}
+
+.contact-form-editorial input,
+.contact-form-editorial textarea,
+.contact-form-editorial [data-slot='select-trigger'] {
+  border-color: color-mix(in srgb, var(--color-secondary, #c7af87) 28%, transparent);
+  background: color-mix(in srgb, var(--color-surface-cream, #fef9f1) 85%, white);
+}
+
+.contact-form-editorial input:focus,
+.contact-form-editorial input:focus-visible,
+.contact-form-editorial textarea:focus,
+.contact-form-editorial textarea:focus-visible,
+.contact-form-editorial [data-slot='select-trigger']:focus-visible {
+  border-color: var(--color-secondary, #c7af87);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary, #c7af87) 18%, transparent);
+}
+
+.contact-form-editorial .contact-field--invalid:focus,
+.contact-form-editorial .contact-field--invalid:focus-visible {
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-error) 15%, transparent) !important;
+}
+
+/* Buying guide inquiry banner — fields live in cream panel (same tokens as editorial) */
+.contact-form-inquiry label,
+.contact-form-inquiry .font-label-sm.text-label-sm {
+  color: var(--color-secondary, #c7af87);
+  letter-spacing: 0.22em;
+}
+
+.contact-form-inquiry input,
+.contact-form-inquiry textarea,
+.contact-form-inquiry [data-slot='select-trigger'] {
+  border-color: color-mix(in srgb, var(--color-secondary, #c7af87) 28%, transparent);
+  background: color-mix(in srgb, var(--color-surface-cream, #fef9f1) 85%, white);
+  color: var(--color-on-surface, #1c1b1a);
+}
+
+.contact-form-inquiry input:focus,
+.contact-form-inquiry input:focus-visible,
+.contact-form-inquiry textarea:focus,
+.contact-form-inquiry textarea:focus-visible,
+.contact-form-inquiry [data-slot='select-trigger']:focus-visible {
+  border-color: var(--color-secondary, #c7af87);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-secondary, #c7af87) 18%, transparent);
+}
+
+.contact-form-inquiry .contact-field--invalid:focus,
+.contact-form-inquiry .contact-field--invalid:focus-visible {
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-error) 15%, transparent) !important;
+}
+
+.contact-form-inquiry a {
+  color: var(--color-secondary, #c7af87);
+}

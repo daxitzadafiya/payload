@@ -1,0 +1,152 @@
+.app-phone-input.react-tel-input {
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-phone-input.react-tel-input .form-control {
+  width: 100%;
+  height: auto;
+  min-height: 3.25rem;
+  border-radius: 0.75rem;
+  font: inherit;
+  letter-spacing: inherit;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* Neutralize library invalid styling — we control errors via .app-phone-input--invalid */
+.app-phone-input.react-tel-input .form-control.invalid-number,
+.app-phone-input.react-tel-input .form-control.invalid-number:focus {
+  background-color: inherit;
+  border-left-color: inherit;
+}
+
+.app-phone-input.react-tel-input .flag-dropdown.invalid-number {
+  border-color: transparent;
+}
+
+.app-phone-input.react-tel-input .invalid-number-message {
+  display: none;
+}
+
+.app-phone-input.react-tel-input .flag-dropdown {
+  background: transparent;
+  border: none;
+}
+
+.app-phone-input.react-tel-input .selected-flag {
+  background: transparent !important;
+  border-radius: 0.75rem 0 0 0.75rem;
+  padding: 0 0 0 0.75rem;
+  width: 3rem;
+}
+
+.app-phone-input.react-tel-input .selected-flag:hover,
+.app-phone-input.react-tel-input .selected-flag:focus,
+.app-phone-input.react-tel-input .selected-flag.open {
+  background: transparent !important;
+}
+
+.app-phone-input.react-tel-input .selected-flag .arrow {
+  border-top-color: color-mix(in srgb, var(--color-on-surface-variant) 70%, transparent);
+}
+
+.app-phone-input.react-tel-input .country-list {
+  margin-top: 0.35rem;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 35%, transparent);
+  background: white;
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.35);
+  max-height: 16rem;
+}
+
+.app-phone-input.react-tel-input .country-list .search {
+  padding: 0.65rem 0.75rem 0.35rem;
+}
+
+.app-phone-input.react-tel-input .country-list .search-box {
+  width: 100%;
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 35%, transparent);
+  font: inherit;
+}
+
+.app-phone-input.react-tel-input .country-list .country {
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+}
+
+.app-phone-input.react-tel-input .country-list .country.highlight,
+.app-phone-input.react-tel-input .country-list .country:hover {
+  background: color-mix(in srgb, var(--color-tertiary) 8%, white);
+}
+
+.app-phone-input--contact.react-tel-input .form-control {
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 35%, transparent);
+  background: white;
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+  padding-right: 1rem;
+  color: var(--color-on-surface);
+}
+
+.app-phone-input--contact.react-tel-input .form-control.invalid-number {
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 35%, transparent);
+  background: white;
+}
+
+.app-phone-input--contact.react-tel-input .form-control::placeholder {
+  color: color-mix(in srgb, var(--color-on-surface-variant) 60%, transparent);
+}
+
+.app-phone-input--contact.react-tel-input .form-control:focus,
+.app-phone-input--contact.react-tel-input .form-control:focus-visible {
+  border-color: var(--color-tertiary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-tertiary) 20%, transparent);
+}
+
+.app-phone-input--holiday.react-tel-input .form-control {
+  border: 1px solid transparent;
+  background: var(--color-surface-container-low);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-right: 0.75rem;
+  color: var(--color-on-surface);
+}
+
+.app-phone-input--holiday.react-tel-input .form-control.invalid-number {
+  border: 1px solid transparent;
+  background: var(--color-surface-container-low);
+}
+
+.app-phone-input--holiday.react-tel-input .form-control::placeholder {
+  color: color-mix(in srgb, var(--color-on-surface-variant) 60%, transparent);
+}
+
+.app-phone-input--holiday.react-tel-input .form-control:focus,
+.app-phone-input--holiday.react-tel-input .form-control:focus-visible {
+  border-color: var(--color-tertiary);
+  box-shadow: none;
+}
+
+.app-phone-input--invalid.app-phone-input--contact.react-tel-input .form-control,
+.app-phone-input--invalid.app-phone-input--contact.react-tel-input .form-control:focus,
+.app-phone-input--invalid.app-phone-input--contact.react-tel-input .form-control:focus-visible {
+  border-color: var(--color-error);
+}
+
+.app-phone-input--invalid.app-phone-input--contact.react-tel-input .form-control:focus,
+.app-phone-input--invalid.app-phone-input--contact.react-tel-input .form-control:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-error) 15%, transparent);
+}
+
+.app-phone-input--invalid.app-phone-input--holiday.react-tel-input .form-control,
+.app-phone-input--invalid.app-phone-input--holiday.react-tel-input .form-control:focus,
+.app-phone-input--invalid.app-phone-input--holiday.react-tel-input .form-control:focus-visible {
+  border-color: var(--color-error);
+}
