@@ -39,7 +39,7 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          NODE_ENV: production
+          NODE_ENV: development
           PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
 
       # 6. Prepare deployment package
