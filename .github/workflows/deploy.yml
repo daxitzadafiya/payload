@@ -35,9 +35,12 @@ jobs:
       - name: Echo current branch
         run: echo "Current branch is ${{ github.ref }}"
 
-      # 5. Build Next.js + Payload  
+      # 5. Build Next.js + Payload
       - name: Build application
         run: npm run build
+        env:
+          NODE_ENV: production
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
 
       # 6. Prepare deployment package
       - name: Prepare deployment
